@@ -1,19 +1,19 @@
 const net = require("net");
-
+const sockets = [];
 const handleClientMsg = async (socket) => {
   socket.on("data", (data) => {
-    data = JSON.parse(data.toString());
-    console.log("data", data);
-    //   console.log(data.name + ":", data.message);
-    socket.write(JSON.stringify(data));
+    console.log("data", data.toString());
+    sockets.forEach((inSocketArr) => {
+      inSocketArr.write(data.toString());
+    });
   });
 };
 const server = net.createServer((socket) => {
   socket.write(
     JSON.stringify({ name: "Server", message: "Hello from server" })
   );
+  sockets.push(socket);
   handleClientMsg(socket);
-  //   console.log("socket.address", socket);
   server.getConnections((err, count) => {
     if (err) console.log("err", err);
     console.log("count", count);
@@ -22,5 +22,5 @@ const server = net.createServer((socket) => {
 server.on("connection", () => console.log("Server is connected"));
 server.listen(4000);
 server.on("error", (err) => {
-  console.log("error", error);
+  console.log("error", err);
 });
