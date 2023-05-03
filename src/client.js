@@ -27,9 +27,8 @@ const inquirer = require("inquirer");
   };
 
   //   create a client connection
-  const client = net.createConnection(
-    { port: 4000, host: "192.168.1.34" },
-    () => console.log("Connected to server")
+  const client = net.createConnection(4000, () =>
+    console.log("Connected to server")
   );
 
   //   show the data recieved from server
